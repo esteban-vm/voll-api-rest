@@ -59,4 +59,8 @@ public class Doctor {
         }
     }
 
+    public void delete() {
+        active = false;
+    }
+
 }
