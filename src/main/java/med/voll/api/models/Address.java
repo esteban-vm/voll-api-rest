@@ -30,4 +30,33 @@ public class Address {
         state = dto.state();
     }
 
+    public void updateInfo(AddressDTO dto) {
+        if (dto.street() != null) {
+            street = dto.street();
+        }
+
+        if (dto.number() != null) {
+            number = dto.number();
+        }
+
+        if (dto.complement() != null) {
+            complement = dto.complement();
+        }
+
+        if (dto.neighbor() != null) {
+            neighbor = dto.neighbor();
+        }
+
+        if (dto.postal_code() != null) {
+            postal_code = dto.postal_code();
+        }
+
+        if (dto.city() != null) {
+            city = dto.city();
+        }
+
+        if (dto.state() != null) {
+            state = dto.state();
+        }
+    }
 }
