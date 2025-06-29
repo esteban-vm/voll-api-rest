@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import med.voll.api.dto.DoctorDTO;
+import med.voll.api.dto.DoctorRegisterDTO;
 import med.voll.api.enums.MedicalSpecialty;
 
 @Table(name = "doctors")
@@ -31,7 +31,7 @@ public class Doctor {
     @Embedded
     private Address address;
 
-    public Doctor(DoctorDTO doctor) {
+    public Doctor(DoctorRegisterDTO doctor) {
         id = null;
         name = doctor.name();
         email = doctor.email();

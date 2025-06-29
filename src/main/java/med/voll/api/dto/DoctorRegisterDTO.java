@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import med.voll.api.enums.MedicalSpecialty;
 
-public record DoctorDTO(
+public record DoctorRegisterDTO(
 
         @NotBlank
         String name,
@@ -29,6 +29,6 @@ public record DoctorDTO(
         @NotNull
         @Valid
         AddressDTO address
-        
+
 ) {
 }
