@@ -1,8 +1,9 @@
 package med.voll.api.controllers;
 
 import jakarta.validation.Valid;
-import med.voll.api.dto.DoctorDTO;
 import med.voll.api.dto.DoctorListDTO;
+import med.voll.api.dto.DoctorRegisterDTO;
+import med.voll.api.dto.DoctorUpdateDTO;
 import med.voll.api.models.Doctor;
 import med.voll.api.repositories.DoctorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,8 @@ public class DoctorController {
 
     @Transactional
     @PostMapping
-    public void register(@RequestBody @Valid DoctorRegisterDTO doctor) {
-        repository.save(new Doctor(doctor));
+    public void register(@RequestBody @Valid DoctorRegisterDTO dto) {
+        repository.save(new Doctor(dto));
     }
 
     @GetMapping
