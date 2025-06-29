@@ -21,7 +21,7 @@ public class DoctorController {
 
     @Transactional
     @PostMapping
-    public void register(@RequestBody @Valid DoctorDTO doctor) {
+    public void register(@RequestBody @Valid DoctorRegisterDTO doctor) {
         repository.save(new Doctor(doctor));
     }
 
