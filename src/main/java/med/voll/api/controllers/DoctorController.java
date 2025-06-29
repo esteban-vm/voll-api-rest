@@ -20,22 +20,29 @@ public class DoctorController {
     @Autowired
     private DoctorRepository repository;
 
-    @Transactional
-    @PostMapping
-    public void register(@RequestBody @Valid DoctorRegisterDTO dto) {
-        repository.save(new Doctor(dto));
-    }
-
     @GetMapping
     public Page<DoctorListDTO> getAll(@PageableDefault(size = 10, sort = {"name"}) Pageable pageable) {
-        return repository.findAll(pageable).map(DoctorListDTO::new);
+        return repository.findAllByActiveTrue(pageable).map(DoctorListDTO::new);
+    }
+
+    @Transactional
+    @PostMapping
+    public void create(@RequestBody @Valid DoctorRegisterDTO dto) {
+        repository.save(new Doctor(dto));
     }
 
     @Transactional
     @PutMapping
     public void update(@RequestBody @Valid DoctorUpdateDTO dto) {
         var doctor = repository.getReferenceById(dto.id());
-        doctor.updateInfo(dto);
+        doctor.update(dto);
+    }
+
+    @Transactional
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        var doctor = repository.getReferenceById(id);
+        doctor.delete();
     }
 
 }
