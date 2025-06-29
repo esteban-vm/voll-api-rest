@@ -22,6 +22,7 @@ public class Doctor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Boolean active;
     private String name;
     private String email;
     private String phone;
@@ -35,6 +36,7 @@ public class Doctor {
 
     public Doctor(DoctorRegisterDTO dto) {
         id = null;
+        active = true;
         name = dto.name();
         email = dto.email();
         phone = dto.phone();
