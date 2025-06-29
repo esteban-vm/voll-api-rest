@@ -31,4 +31,11 @@ public class DoctorController {
         return repository.findAll(pageable).map(DoctorListDTO::new);
     }
 
+    @Transactional
+    @PutMapping
+    public void update(@RequestBody @Valid DoctorUpdateDTO dto) {
+        var doctor = repository.getReferenceById(dto.id());
+        doctor.updateInfo(dto);
+    }
+
 }
