@@ -31,14 +31,14 @@ public class Doctor {
     @Embedded
     private Address address;
 
-    public Doctor(DoctorRegisterDTO doctor) {
+    public Doctor(DoctorRegisterDTO dto) {
         id = null;
-        name = doctor.name();
-        email = doctor.email();
-        phone = doctor.phone();
-        document = doctor.document();
-        specialty = doctor.specialty();
-        address = new Address(doctor.address());
+        name = dto.name();
+        email = dto.email();
+        phone = dto.phone();
+        document = dto.document();
+        specialty = dto.specialty();
+        address = new Address(dto.address());
     }
 
 }

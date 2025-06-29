@@ -20,14 +20,14 @@ public class Address {
     private String city;
     private String state;
 
-    public Address(AddressDTO address) {
-        street = address.street();
-        number = address.number();
-        complement = address.complement();
-        neighbor = address.neighbor();
-        postal_code = address.postal_code();
-        city = address.city();
-        state = address.state();
+    public Address(AddressDTO dto) {
+        street = dto.street();
+        number = dto.number();
+        complement = dto.complement();
+        neighbor = dto.neighbor();
+        postal_code = dto.postal_code();
+        city = dto.city();
+        state = dto.state();
     }
 
 }
