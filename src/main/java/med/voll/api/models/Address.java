@@ -30,7 +30,7 @@ public class Address {
         state = dto.state();
     }
 
-    public void updateInfo(AddressDTO dto) {
+    public void update(AddressDTO dto) {
         if (dto.street() != null) {
             street = dto.street();
         }
@@ -59,4 +59,5 @@ public class Address {
             state = dto.state();
         }
     }
+
 }

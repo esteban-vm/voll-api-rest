@@ -45,7 +45,7 @@ public class Doctor {
         address = new Address(dto.address());
     }
 
-    public void updateInfo(@Valid DoctorUpdateDTO dto) {
+    public void update(@Valid DoctorUpdateDTO dto) {
         if (dto.name() != null) {
             name = dto.name();
         }
@@ -55,7 +55,8 @@ public class Doctor {
         }
 
         if (dto.address() != null) {
-            address.updateInfo(dto.address());
+            address.update(dto.address());
         }
     }
+
 }
