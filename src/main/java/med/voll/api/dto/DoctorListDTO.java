@@ -5,6 +5,7 @@ import med.voll.api.models.Doctor;
 
 public record DoctorListDTO(
 
+        Long id,
         String name,
         String email,
         String document,
@@ -13,7 +14,13 @@ public record DoctorListDTO(
 ) {
 
     public DoctorListDTO(Doctor doctor) {
-        this(doctor.getName(), doctor.getEmail(), doctor.getDocument(), doctor.getSpecialty());
+        this(
+                doctor.getId(),
+                doctor.getName(),
+                doctor.getEmail(),
+                doctor.getDocument(),
+                doctor.getSpecialty()
+        );
     }
-    
+
 }
