@@ -9,24 +9,24 @@ import med.voll.api.enums.MedicalSpecialty;
 
 public record DoctorCreateDTO(
 
-        @NotBlank
+        @NotBlank(message = "El nombre es requerido")
         String name,
 
-        @NotBlank
-        @Email
+        @NotBlank(message = "El correo electrónico es requerido")
+        @Email(message = "El correo electrónico debe ser válido")
         String email,
 
-        @NotBlank
+        @NotBlank(message = "El teléfono es requerido")
         String phone,
 
-        @NotBlank
-        @Pattern(regexp = "\\d{7,9}")
+        @NotBlank(message = "El documento es requerido")
+        @Pattern(regexp = "\\d{7,9}", message = "El formato del documento debe ser válido")
         String document,
 
-        @NotNull
+        @NotNull(message = "La especialidad es requerida")
         MedicalSpecialty specialty,
 
-        @NotNull
+        @NotNull(message = "Los datos de dirección son requeridos")
         @Valid
         AddressDTO address
 
