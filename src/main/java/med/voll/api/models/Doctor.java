@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import med.voll.api.dto.DoctorRegisterDTO;
+import med.voll.api.dto.DoctorCreateDTO;
 import med.voll.api.dto.DoctorUpdateDTO;
 import med.voll.api.enums.MedicalSpecialty;
 
@@ -34,7 +34,7 @@ public class Doctor {
     @Embedded
     private Address address;
 
-    public Doctor(DoctorRegisterDTO dto) {
+    public Doctor(DoctorCreateDTO dto) {
         id = null;
         active = true;
         name = dto.name();
