@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
+
 @RestController
 @RequestMapping("/login")
 public class AuthController {
@@ -26,10 +28,15 @@ public class AuthController {
 
     @PostMapping
     public ResponseEntity login(@RequestBody @Valid AuthLoginDTO login) {
-        var authenticationToken = new UsernamePasswordAuthenticationToken(login.username(), login.password());
-        var auth = manager.authenticate(authenticationToken);
-        var jwtToken = service.generateToken((User) auth.getPrincipal());
-        return ResponseEntity.ok(new JWTTokenDTO(jwtToken));
+        try {
+            var authToken = new UsernamePasswordAuthenticationToken(login.username(), login.password());
+            var auth = manager.authenticate(authToken);
+            var jwtToken = service.generateToken((User) auth.getPrincipal());
+            return ResponseEntity.ok(new JWTTokenDTO(jwtToken));
+        } catch (Exception e) {
+            System.out.println(Arrays.toString(e.getStackTrace()));
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
 }
