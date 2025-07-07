@@ -27,4 +27,5 @@ public record DoctorDetailDTO(
                 doctor.getAddress()
         );
     }
+    
 }
