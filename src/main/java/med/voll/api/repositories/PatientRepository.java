@@ -9,4 +9,6 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
 
     Page<Patient> findAllByActiveTrue(Pageable pageable);
 
+    Boolean findActiveById(Long idPatient);
+
 }

@@ -8,8 +8,11 @@ import med.voll.api.models.Doctor;
 import med.voll.api.repositories.AppointmentRepository;
 import med.voll.api.repositories.DoctorRepository;
 import med.voll.api.repositories.PatientRepository;
+import med.voll.api.validations.IAppointmentValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AppointmentService {
@@ -22,6 +25,9 @@ public class AppointmentService {
 
     @Autowired
     private PatientRepository patientRepository;
+
+    @Autowired
+    private List<IAppointmentValidator> validators;
 
     private Doctor chooseDoctor(AppointmentCreateDTO dto) {
         if (dto.idDoctor() != null) {
@@ -43,6 +49,9 @@ public class AppointmentService {
         if (!patientRepository.existsById(dto.idPatient())) {
             throw new ValidationException("El paciente no existe");
         }
+
+        // Validations
+        validators.forEach(validator -> validator.validate(dto));
 
         var doctor = chooseDoctor(dto);
         var patient = patientRepository.findById(dto.idPatient()).get();
