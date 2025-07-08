@@ -41,7 +41,7 @@ public class AppointmentService {
         return doctorRepository.chooseRandomDoctorAvailableOnDate(dto.specialty(), dto.dateTime());
     }
 
-    public void book(AppointmentCreateDTO dto) throws ValidationException {
+    public void bookAppointment(AppointmentCreateDTO dto) throws ValidationException {
         if (dto.idDoctor() != null && !doctorRepository.existsById(dto.idDoctor())) {
             throw new ValidationException("El médico no existe");
         }
@@ -59,7 +59,7 @@ public class AppointmentService {
         appointmentRepository.save(appointment);
     }
 
-    public void cancel(AppointmentDeleteDTO dto) {
+    public void cancelAppointment(AppointmentDeleteDTO dto) {
         if (!appointmentRepository.existsById(dto.idAppointment())) {
             throw new ValidationException("La consulta no existe");
         }

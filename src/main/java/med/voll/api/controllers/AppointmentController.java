@@ -20,14 +20,14 @@ public class AppointmentController {
     @Transactional
     @PostMapping
     public ResponseEntity<AppointmentDetailDTO> create(@RequestBody @Valid AppointmentCreateDTO dto) {
-        service.book(dto);
+        service.bookAppointment(dto);
         return ResponseEntity.ok(new AppointmentDetailDTO(null, null, null, null));
     }
 
     @Transactional
     @DeleteMapping
     public ResponseEntity cancel(@RequestBody @Valid AppointmentDeleteDTO dto) {
-        service.cancel(dto);
+        service.cancelAppointment(dto);
         return ResponseEntity.noContent().build();
     }
 
