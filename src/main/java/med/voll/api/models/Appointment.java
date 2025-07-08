@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import med.voll.api.enums.CancellationReason;
 
 import java.time.LocalDateTime;
 
@@ -29,5 +30,13 @@ public class Appointment {
     private Patient patient;
 
     private LocalDateTime dateTime;
+
+    @Column(name = "cancellation_reason")
+    @Enumerated(EnumType.STRING)
+    private CancellationReason cancellationReason;
+
+    public void cancel(CancellationReason reason) {
+        cancellationReason = reason;
+    }
 
 }
