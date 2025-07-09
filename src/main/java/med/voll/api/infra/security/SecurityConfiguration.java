@@ -40,7 +40,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers(HttpMethod.POST, "/login").permitAll();
                     req.requestMatchers(HttpMethod.DELETE, "/doctors").hasRole("ADMIN");
-                    // req.requestMatchers(HttpMethod.DELETE, "/patients").hasRole("ADMIN");
+                    req.requestMatchers(HttpMethod.DELETE, "/patients").hasRole("ADMIN");
                     req.anyRequest().authenticated();
                 })
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
