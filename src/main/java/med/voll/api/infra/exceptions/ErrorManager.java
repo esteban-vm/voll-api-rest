@@ -47,6 +47,11 @@ public class ErrorManager {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Acceso denegado");
     }
 
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity handleValidationError(ValidationException exception) {
+        return ResponseEntity.badRequest().body(exception.getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity handleServerError(Exception exception) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + exception.getLocalizedMessage());
