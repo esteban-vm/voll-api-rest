@@ -2,6 +2,7 @@ package med.voll.api.services;
 
 import med.voll.api.dto.AppointmentCreateDTO;
 import med.voll.api.dto.AppointmentDeleteDTO;
+import med.voll.api.dto.AppointmentDetailDTO;
 import med.voll.api.infra.exceptions.ValidationException;
 import med.voll.api.models.Appointment;
 import med.voll.api.models.Doctor;
@@ -38,10 +39,16 @@ public class AppointmentService {
             throw new ValidationException("La especialidad no existe");
         }
 
-        return doctorRepository.chooseRandomDoctorAvailableOnDate(dto.specialty(), dto.dateTime());
+        var doctor = doctorRepository.chooseRandomDoctorAvailableOnDate(dto.specialty(), dto.dateTime());
+
+        if (doctor == null) {
+            throw new ValidationException("No existe un médico disponible en ese horario");
+        }
+
+        return doctor;
     }
 
-    public void bookAppointment(AppointmentCreateDTO dto) throws ValidationException {
+    public AppointmentDetailDTO bookAppointment(AppointmentCreateDTO dto) throws ValidationException {
         if (dto.idDoctor() != null && !doctorRepository.existsById(dto.idDoctor())) {
             throw new ValidationException("El médico no existe");
         }
@@ -57,6 +64,8 @@ public class AppointmentService {
         var patient = patientRepository.findById(dto.idPatient()).get();
         var appointment = new Appointment(null, doctor, patient, dto.dateTime(), null);
         appointmentRepository.save(appointment);
+
+        return new AppointmentDetailDTO(appointment);
     }
 
     public void cancelAppointment(AppointmentDeleteDTO dto) {
