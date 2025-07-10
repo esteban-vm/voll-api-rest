@@ -22,7 +22,6 @@ import java.time.temporal.TemporalAdjusters;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 @DataJpaTest
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -38,12 +37,14 @@ class DoctorRepositoryTest {
     @DisplayName("Debería devolver null cuando el médico buscado exista pero no esté disponible en la fecha")
     void chooseRandomDoctorAvailableOnDateScenario1() {
         // given or arrange
-        var doctor = registerDoctor("Doctor 1", "doctor1email@ejemplo.com", "12345", MedicalSpecialty.CARDIOLOGIA);
-        var patient = registerPatient("Paciente 1", "paciente1email@ejemplo.com", "54321");
+        var doctor = registerDoctorAndReturn("Doctor 1", "doctor1email@ejemplo.com", "12345", MedicalSpecialty.CARDIOLOGIA);
+        var patient = registerPatientAndReturn("Paciente 1", "paciente1email@ejemplo.com", "54321");
         var nextMondayAt10 = getAppointmentDateTime();
         registerAppointment(doctor, patient, nextMondayAt10);
+
         // when or act
         var availableDoctor = repository.chooseRandomDoctorAvailableOnDate(MedicalSpecialty.CARDIOLOGIA, nextMondayAt10);
+
         // then or assert
         assertThat(availableDoctor).isNull();
     }
@@ -52,10 +53,12 @@ class DoctorRepositoryTest {
     @DisplayName("Debería devolver el médico cuando sí esté disponible en la fecha")
     void chooseRandomDoctorAvailableOnDateScenario2() {
         // given or arrange
-        var doctor = registerDoctor("Doctor 2", "doctor2email@ejemplo.com", "54321", MedicalSpecialty.DERMATOLOGIA);
+        var doctor = registerDoctorAndReturn("Doctor 2", "doctor2email@ejemplo.com", "54321", MedicalSpecialty.DERMATOLOGIA);
         var nextMondayAt10 = getAppointmentDateTime();
+
         // when or act
         var availableDoctor = repository.chooseRandomDoctorAvailableOnDate(MedicalSpecialty.DERMATOLOGIA, nextMondayAt10);
+
         // then or assert
         assertThat(availableDoctor).isEqualTo(doctor);
     }
@@ -64,13 +67,13 @@ class DoctorRepositoryTest {
         manager.persist(new Appointment(null, doctor, patient, dateTime, null));
     }
 
-    private Doctor registerDoctor(String name, String email, String document, MedicalSpecialty specialty) {
+    private Doctor registerDoctorAndReturn(String name, String email, String document, MedicalSpecialty specialty) {
         var doctor = new Doctor(getDoctorData(name, email, document, specialty));
         manager.persist(doctor);
         return doctor;
     }
 
-    private Patient registerPatient(String name, String email, String document) {
+    private Patient registerPatientAndReturn(String name, String email, String document) {
         var patient = new Patient(getPatientData(name, email, document));
         manager.persist(patient);
         return patient;
