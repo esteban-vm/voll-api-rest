@@ -44,7 +44,7 @@ class AppointmentControllerTest {
     @Test
     @DisplayName("Debería devolver http 400 cuando la solicitud no obtenga datos")
     @WithMockUser
-    void createCase1() throws Exception {
+    void createAppointmentScenario1() throws Exception {
         var response = mvc
                 .perform(post("/appointments"))
                 .andReturn()
@@ -56,7 +56,7 @@ class AppointmentControllerTest {
     @Test
     @DisplayName("Debería devolver http 200 cuando la solicitud reciba un JSON válido")
     @WithMockUser
-    void createCase2() throws Exception {
+    void createAppointmentScenario2() throws Exception {
         var dateTime = LocalDateTime.now().plusHours(1);
         var speciality = MedicalSpecialty.CARDIOLOGIA;
         var detail = new AppointmentDetailDTO(null, 2L, 5L, dateTime);

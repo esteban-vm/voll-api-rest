@@ -8,7 +8,6 @@ import med.voll.api.enums.MedicalSpecialty;
 import med.voll.api.models.Appointment;
 import med.voll.api.models.Doctor;
 import med.voll.api.models.Patient;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +19,9 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 @DataJpaTest
 @ActiveProfiles("test")
@@ -33,29 +35,29 @@ class DoctorRepositoryTest {
     private EntityManager manager;
 
     @Test
-    @DisplayName("Debería devolver null cuando el médico buscado exista pero no esté disponible en esa fecha")
-    void chooseRandomDoctorAvailableOnDateCase1() {
+    @DisplayName("Debería devolver null cuando el médico buscado exista pero no esté disponible en la fecha")
+    void chooseRandomDoctorAvailableOnDateScenario1() {
         // given or arrange
         var doctor = registerDoctor("Doctor 1", "doctor1email@ejemplo.com", "12345", MedicalSpecialty.CARDIOLOGIA);
         var patient = registerPatient("Paciente 1", "paciente1email@ejemplo.com", "54321");
-        var nextMondayAt10 = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY)).atTime(10, 0);
+        var nextMondayAt10 = getAppointmentDateTime();
         registerAppointment(doctor, patient, nextMondayAt10);
         // when or act
         var availableDoctor = repository.chooseRandomDoctorAvailableOnDate(MedicalSpecialty.CARDIOLOGIA, nextMondayAt10);
         // then or assert
-        Assertions.assertThat(availableDoctor).isNull();
+        assertThat(availableDoctor).isNull();
     }
 
     @Test
-    @DisplayName("Debería devolver el médico cuando sí esté disponible en esa fecha")
-    void chooseRandomDoctorAvailableOnDateCase2() {
+    @DisplayName("Debería devolver el médico cuando sí esté disponible en la fecha")
+    void chooseRandomDoctorAvailableOnDateScenario2() {
         // given or arrange
-        var doctor = registerDoctor("Doctor 1", "doctor1email@ejemplo.com", "12345", MedicalSpecialty.CARDIOLOGIA);
-        var nextMondayAt10 = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY)).atTime(10, 0);
+        var doctor = registerDoctor("Doctor 2", "doctor2email@ejemplo.com", "54321", MedicalSpecialty.DERMATOLOGIA);
+        var nextMondayAt10 = getAppointmentDateTime();
         // when or act
-        var availableDoctor = repository.chooseRandomDoctorAvailableOnDate(MedicalSpecialty.CARDIOLOGIA, nextMondayAt10);
+        var availableDoctor = repository.chooseRandomDoctorAvailableOnDate(MedicalSpecialty.DERMATOLOGIA, nextMondayAt10);
         // then or assert
-        Assertions.assertThat(availableDoctor).isEqualTo(doctor);
+        assertThat(availableDoctor).isEqualTo(doctor);
     }
 
     private void registerAppointment(Doctor doctor, Patient patient, LocalDateTime dateTime) {
@@ -63,26 +65,26 @@ class DoctorRepositoryTest {
     }
 
     private Doctor registerDoctor(String name, String email, String document, MedicalSpecialty specialty) {
-        var doctor = new Doctor(doctorData(name, email, document, specialty));
+        var doctor = new Doctor(getDoctorData(name, email, document, specialty));
         manager.persist(doctor);
         return doctor;
     }
 
     private Patient registerPatient(String name, String email, String document) {
-        var patient = new Patient(patientData(name, email, document));
+        var patient = new Patient(getPatientData(name, email, document));
         manager.persist(patient);
         return patient;
     }
 
-    private DoctorCreateDTO doctorData(String name, String email, String document, MedicalSpecialty specialty) {
-        return new DoctorCreateDTO(name, email, "4541256", document, specialty, addressData());
+    private DoctorCreateDTO getDoctorData(String name, String email, String document, MedicalSpecialty specialty) {
+        return new DoctorCreateDTO(name, email, "4541256", document, specialty, getAddressData());
     }
 
-    private PatientCreateDTO patientData(String name, String email, String document) {
-        return new PatientCreateDTO(name, email, "1234567", document, addressData());
+    private PatientCreateDTO getPatientData(String name, String email, String document) {
+        return new PatientCreateDTO(name, email, "1234567", document, getAddressData());
     }
 
-    private AddressDTO addressData() {
+    private AddressDTO getAddressData() {
         return new AddressDTO(
                 "calle x",
                 "12",
@@ -91,6 +93,13 @@ class DoctorRepositoryTest {
                 "1234",
                 "ciudad z",
                 "estado a");
+    }
+
+    private LocalDateTime getAppointmentDateTime() {
+        return LocalDate
+                .now()
+                .with(TemporalAdjusters.next(DayOfWeek.MONDAY))
+                .atTime(10, 0);
     }
 
 }
